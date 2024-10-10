@@ -44,21 +44,24 @@ All events have a basic structure:
 - event specifics that pertain to the specific event subtype, e.g. the `language_id`
   of a particular resumed game, or the score achieved in that particular attempt.
 
-> [!info] Example event:
-> {
-> "event_uuid":"d7ca46d5-80b5-4b81-bf5b-c96a60c4c573",
-> "created_at":1712844605.9512355,
-> "event_name":"game:resumed",
-> "event_specifics":{
-> "device":"iOS",
-> "user_location":"Vernier, France",
-> "attempts":93,
-> "language_id":"lang_ru",
-> "difficulty":"Hard",
-> "score":46,
-> "session_id":"937baf69-7d3e-406c-b32f-f8a937bd70f1"
-> }
-> }
+Example Event:
+```
+{
+  "event_uuid":"d7ca46d5-80b5-4b81-bf5b-c96a60c4c573",
+  "created_at":1712844605.9512355,
+  "event_name":"game:resumed",
+  "event_specifics":
+  {
+    "device":"iOS",
+    "user_location":"Vernier, France",
+    "attempts":93,
+    "language_id":"lang_ru",
+    "difficulty":"Hard",
+    "score":46,
+    "session_id":"937baf69-7d3e-406c-b32f-f8a937bd70f1"
+  }
+}
+```
 
 An overview of all event types, subtypes and their corresponding field types
 can be found in the `data_creation/event_config.yml` file.
@@ -74,14 +77,15 @@ The data is serialised into .json and passed on to the downstream consumers.
 The data is then passed into a Kinesis stream which is consumed by a Lambda function.
 The Kinesis stream has 1 or maybe 2 shards, in which case the data would be partitioned by `event_uuid` to ensure equal distribution of data across shards.
 
-> [!info] Differences between Toy Example and Local Mock Up:
-> The **toy example** mocks up the Kinesis stream by simply
-> taking the official AWS Kinesis JSON template and replacing
-> the "data" portion of the payload with the generated event
-> all right in the `producer.py` file.
+>[!IMPORTANT]
+>**Differences between Toy Example and Local Mock Up:**
+>The **toy example** mocks up the Kinesis stream by simply
+>taking the official AWS Kinesis JSON template and replacing
+>the "data" portion of the payload with the generated event
+>all right in the `producer.py` file.
 >
-> The **local mock up** mocks up an actual Kinesis stream
-> through Localstack.
+>The **local mock up** mocks up an actual Kinesis stream
+>through Localstack.
 
 In the Lambda function, some basic business logic is applied to the data and it
 is deduplicated using a DynamoDB, which is mocked up here as a Redis database.
@@ -90,7 +94,8 @@ already exists in the ID cache (Redis or DynamoDB). It then splits the
 event_type into `event_subtype` and `event_type` and converts the `created_at`
 timestamp to isoformat.
 
-> [!info] Differences between Toy Example and Local Mock Up:
+> [!IMPORTANT]
+> **Differences between Toy Example and Local Mock Up:**
 > The **toy example** implements the Lambda function as
 > a local Python function, whereas the **local mock up** implements
 > an actual Lambda function in Localstack.
@@ -100,7 +105,8 @@ timestamp to isoformat.
 The Lambda function stores the data as `.ndjson` files in the staging area of an S3 bucket / data lake.
 The staging area is partitioned by **year, month, day, hour, and minute**. I.e. every minute, the inflowing data will be stored in a new "folder".
 
-> [!info] Differences between Toy Example and Local Mock Up:
+> [!IMPORTANT]
+> **Differences between Toy Example and Local Mock Up:**
 > The **toy example** stores the data in the local filesystem under the
 > `output/datalake/staging` folder.
 > The **local mock up** mocks an actual S3 bucket using Localstack.
@@ -117,7 +123,8 @@ clustering them by language_id
 //TODO: Check discrepancy in clustering strategy between
 //Architecture diagram (only by day), and actual Glue script (by hour).
 
-> [!info] Differences between Toy Example and Local Mock Up:
+> [!IMPORTANT]
+> **Differences between Toy Example and Local Mock Up:**
 > The **toy example** implements the Spark job as a local Python function, whereas the
 > **local mock up** mocks up an AWS Glue instance in Localstack.
 
@@ -134,8 +141,8 @@ To ensure all processes are running smoothly, a Cloudwatch instance monitors
 the number of function invocations, logs all errors and warnings, and
 supervises limits such as storage usage.
 
-> [!info] Differences between Toy Example and Local Mock Up:
->
+> [!IMPORTANT]
+> **Differences between Toy Example and Local Mock Up:**
 > - The **Toy Example** implements Cloudwatch as a simple `dataclass` in Python
 >   in the `mock_cloudwatch.py` file. It has fields for the number of function
 >   invocations, the number of ingested events, prevented duplicates, and storage
