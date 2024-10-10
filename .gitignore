@@ -1,0 +1,7 @@
+dump.rdb
+data_creation/__pycache__
+output/datalake/*
+toy_example/__pycache__
+output/cloudwatch_reports/*
+test/__pycache__
+toy_example/.DS_Store

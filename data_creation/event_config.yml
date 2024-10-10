@@ -1,0 +1,359 @@
+account:
+  created:
+    fields:
+      language_id: "not_applicable"
+      device: "device"
+      account_id: "account_id"
+      session_id: "session_id"
+      registration_method: "registration_method"
+      user_location: "location"
+  email_confirmed:
+    fields:
+      language_id: "not_applicable"
+      device: "device"
+      account_id: "account_id"
+      session_id: "session_id"
+      user_location: "location"
+      e-mail: "email"
+  confirmation_bounced:
+      fields:
+        language_id: "not_applicable"
+        device: "device"
+        account_id: "account_id"
+        session_id: "session_id"
+        email: "email"
+        user_location: "location"
+  updated:
+    fields:
+      language_id: "not_applicable"
+      device: "device"
+      account_id: "account_id"
+      session_id: "session_id"
+      updated_fields: "account_field"
+      user_location: "location"
+  deleted:
+    fields:
+      language_id: "not_applicable"
+      device: "device"
+      account_id: "account_id"
+      session_id: "session_id"
+      days_active: "number"
+      user_location: "location"
+  login:
+    fields:
+      language_id: "not_applicable"
+      device: "device"
+      account_id: "account_id"
+      session_id: "session_id"
+      last_login_time: "timestamp"
+      user_location: "location"
+  logout:
+    fields:
+      language_id: "not_applicable"
+      device: "device"
+      account_id: "account_id"
+      session_id: "session_id"
+      user_location: "location"
+  password-reset:
+    fields:
+      language_id: "not_applicable"
+      device: "device"
+      account_id: "account_id"
+      session_id: "session_id"
+      user_location: "location"
+
+session:
+  created:
+    fields:
+      language_id: "language_id"
+      device: "device"
+      session_id: "session_id"
+      user_id: "user_id"
+      start_time: "timestamp"
+      user_location: "location"
+  resumed:
+    fields:
+      language_id: "language_id"
+      device: "device"
+      session_id: "session_id"
+      user_id: "user_id"
+      resume_time: "timestamp"
+      user_location: "location"
+  ended:
+    fields:
+      language_id: "language_id"
+      device: "device"
+      session_id: "session_id"
+      user_id: "user_id"
+      end_time: "timestamp"
+      user_location: "location"
+
+language:
+  # when you select a new language from the start
+  selected:
+    fields:
+      language_id: "not_applicable"
+      device: "device"
+      selected_language_id: "language_id"
+      session_id: "session_id"
+      user_location: "location"
+      
+  # When you switch to another language
+  changed:
+    fields:
+      language_id: "not_applicable"
+      device: "device"
+      selected_language_id: "language_id"
+      session_id: "session_id"
+      # the language you switched from
+      un_selected_language_id: "language_id"
+      user_location: "location"
+
+lesson:
+  started:
+    fields:
+      language_id: "language_id"
+      device: "device"
+      lesson_id: "lesson_id"
+      user_id: "user_id"
+      duration: "duration"
+      session_id: "session_id"
+      user_location: "location"
+    resumed:
+      fields:
+        language_id: "language_id"
+        device: "device"
+        lesson_id: "lesson_id"
+        user_id: "user_id"
+        duration: "duration"
+        session_id: "session_id"
+        user_location: "location"
+  completed:
+    fields:
+      language_id: "language_id"
+      device: "device"
+      lesson_id: "lesson_id"
+      user_id: "user_id"
+      duration: "duration"
+      session_id: "session_id"
+      user_location: "location"
+  paused:
+    fields:
+      language_id: "language_id"
+      device: "device"
+      lesson_id: "lesson_id"
+      user_id: "user_id"
+      duration: "duration"
+      session_id: "session_id"
+      user_location: "location"
+  resumed:
+    fields:
+      language_id: "language_id"
+      device: "device"
+      lesson_id: "lesson_id"
+      user_id: "user_id"
+      duration: "duration"
+      session_id: "session_id"
+      user_location: "location"
+  skipped:
+    fields:
+      language_id: "language_id"
+      device: "device"
+      lesson_id: "lesson_id"
+      user_id: "user_id"
+      duration: "duration"
+      session_id: "session_id"
+      user_location: "location"
+
+exercise:
+  attempted:
+    fields:
+      language_id: "language_id"
+      device: "device"
+      exercise_id: "exercise_id"
+      user_id: "user_id"
+      duration: "duration"
+      score: "score"
+      session_id: "session_id"
+      user_location: "location"
+  completed:
+    fields:
+      language_id: "language_id"
+      device: "device"
+      exercise_id: "exercise_id"
+      user_id: "user_id"
+      duration: "duration"
+      score: "score"
+      session_id: "session_id"
+      user_location: "location"
+  failed:
+    fields:
+      language_id: "language_id"
+      device: "device"
+      exercise_id: "exercise_id"
+      user_id: "user_id"
+      duration: "duration"
+      score: "score"
+      session_id: "session_id"
+      user_location: "location"
+  hint-requested:
+    fields:
+      language_id: "language_id"
+      device: "device"
+      exercise_id: "exercise_id"
+      user_id: "user_id"
+      duration: "duration"
+      user_location: "location"
+  skipped:
+    fields:
+      language_id: "language_id"
+      device: "device"
+      exercise_id: "exercise_id"
+      user_id: "user_id"
+      duration: "duration"
+      score: "score"
+      session_id: "session_id"
+      user_location: "location"
+
+subscription:
+  purchased:
+    fields:
+      language_id: "not_applicable"
+      device: "device"
+      user_location: "location"
+      subscription_id: "subscription_id"
+      subscription_type: "subscription_type"
+      user_id: "user_id"
+      session_id: "session_id"
+      purchase_source: "purchase_source"
+      days_into_trial: "number"
+  cancelled:
+    fields:
+      language_id: "not_applicable"
+      device: "device"
+      user_location: "location"
+      subscription_id: "subscription_id"
+      subscription_type: "subscription_type"
+      user_id: "user_id"
+      session_id: "session_id"
+      reason_cancelled: "reason_cancelled"
+      days_active: "number"
+  renewed:
+    fields:
+      language_id: "not_applicable"
+      device: "device"
+      user_location: "location"
+      subscription_id: "subscription_id"
+      subscription_type: "subscription_type"
+      user_id: "user_id"
+      session_id: "session_id"
+      days_active: "number"
+
+payment:
+  order:completed:
+    fields:
+      language_id: "not_applicable"
+      device: "device"
+      user_location: "location"
+      order_id: "order_id"
+      amount: "amount"
+      currency: "currency"
+      payment_method: "payment_method"
+      session_id: "session_id"
+  order:failed:
+    fields:
+      language_id: "not_applicable"
+      device: "device"
+      user_location: "location"
+      amount: "amount"
+      order_id: "order_id"
+      currency: "currency"
+      failcount: "number_1to10"
+      payment_method: "payment_method"
+      session_id: "session_id"
+
+feedback:
+  provided:
+    fields:
+      language_id: "language_id"
+      device: "device"
+      user_location: "location"
+      exercise_id: "exercise_id"
+      feedback: "sentence"
+      user_id: "user_id"
+      session_id: "session_id"
+
+rating:
+  provided:
+    fields:
+      language_id: "language_id"
+      device: "device"
+      user_location: "location"
+      exercise_id: "exercise_id" 
+      rating: "rating"
+      user_id: "user_id"
+      session_id: "session_id"
+
+game:
+  started:
+    fields:
+      device: "device"
+      user_location: "location"
+      game_id: "game_id"
+      language_id: "language_id"
+      difficulty: "difficulty"
+      score: "score"
+      session_id: "session_id"
+  completed:
+    fields:
+      device: "device"
+      user_location: "location"
+      game_id: "game_id"
+      duration: "duration"
+      attempts: "number"
+      language_id: "language_id"
+      difficulty: "difficulty"
+      score: "score"
+      session_id: "session_id"
+  resumed:
+    fields:
+      device: "device"
+      user_location: "location"
+      game_id: "game_id"
+      attempts: "number"
+      language_id: "language_id"
+      difficulty: "difficulty"
+      score: "score"
+      session_id: "session_id"
+
+referral:
+  sent:
+    fields:
+      language_id: "not_applicable"
+      device: "device"
+      user_location: "location"
+      referree_id: "user_id"
+      campaign_id: "campaign_id"
+      session_id: "session_id"
+
+  clicked:
+    fields:
+      language_id: "not_applicable"
+      device: "device"
+      user_location: "location"
+      referree_id: "user_id"
+      campaign_id: "campaign_id"
+      session_id: "session_id"
+
+  accepted:
+    fields:
+      language_id: "not_applicable"
+      device: "device"
+      user_location: "location"
+      referree_id: "user_id"
+      campaign_id: "campaign_id"
+      session_id: "session_id"
+      
+
+
+
