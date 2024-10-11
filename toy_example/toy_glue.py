@@ -55,7 +55,6 @@ def toy_glue_function(
     spark_session.conf.set("spark.sql.files.maxRecordsPerBatch", "10000")
 
     # Using repartition might help better in this case to ensure even data distribution
-    # TODO: Do we really need to partition by hour?
     processed_folder = f"output/datalake/processed/year={datetime.datetime.now().strftime('%Y')} \
             /month={datetime.datetime.now().strftime('%m')}/day={datetime.datetime.now().strftime('%d')} \
             /hour={input_hour}/"

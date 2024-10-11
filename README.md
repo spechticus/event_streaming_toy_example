@@ -116,17 +116,23 @@ batch-process the data using a Spark job that is run from an AWS Glue or AWS EMR
 The Spark job serialises the more ephemeral `.ndjson` files from the staging
 area into more permanent Parquet files, which are partitioned by **year, month,
 day, and language**, thereby combining a day's worth of staging files and
-clustering them by language_id
-//TODO: Check discrepancy in clustering strategy between
-//Architecture diagram (only by day), and actual Glue script (by hour).
+clustering them by language_id.
+
+> [!IMPORTANT] > **Differences between Toy Example and Local Mock Up:**
+> To better see the results, the staging layer of the Toy Example additionally opens up a "minute"
+> clustering layer / subfolder to better illustrate the example without the
+> user having to let the script run for several hours.
 
 > [!IMPORTANT] > **Differences between Toy Example and Local Mock Up:**
 > The **toy example** implements the Spark job as a local Python function, whereas the
 > **local mock up** mocks up an AWS Glue instance in Localstack.
 
 The Spark job writes the Parquet files to the `output/datalake/processed` folder.
-//TODO: What about the Watermark file mentioned in the Architecture diagram?
-//Are we just de-duplicating the batch itself in the Spark job?
+
+> [!WARNING] > Discrepancy between the Architecture diagram and the code
+> While the Architecture diagram lists a Watermark file as a possibility to
+> deduplicate the transformed data, I decided to only duplicate the transformed
+> batch internally to avoid bloat (see discussion section below.)
 
 From here on, the data can be processed fast and reliably, given
 the versatility of Parquet files.
@@ -209,6 +215,15 @@ You can run the entire pipeline simulation with:
 make run-toy-example
 ```
 
+To model a continuous datastream the script has no defined end point and you will need to manually terminate it through killing the terminal or aborting the current process with `CTRL+C`.
+
+### Testing the pipeline
+
+In the **toy example**, currently, only a handful of tests are implemented:
+
+- The Lambda function gets tested if it correctly de-duplicates events and whether it correctly handles empty requests.
+- The `write_ndson()` utility function of the Lambda function is separately tested whether it correctly writes records in the expected format.
+
 ## Architecture deepdive: Technology Choices and Rationale
 
 - **Kinesis**: To handle **1 million events/hour** (assuming 1 KB per event), the throughput is approximately 1 GB/hour. Using the calculation:
@@ -282,8 +297,10 @@ For this pipeline, two file formats are used:
 
 ### Testing and Reliability
 
-Testing has so far been out of scope for this pipeline project and needs to be
-added in the future. Thus, most of this paragraph is abstract and speculative.
+Currently, only some basic testing is implemented. Most testing has so far been
+out of scope for this pipeline project and needs to be
+added in the future. Thus, most of this paragraph is abstract
+and speculative.
 
 Several levels of testing are necessary to ensure the architecture works smoothly:
 
