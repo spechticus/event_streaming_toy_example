@@ -77,7 +77,8 @@ The data is serialised into .json and passed on to the downstream consumers.
 The data is then passed into a Kinesis stream which is consumed by a Lambda function.
 The Kinesis stream has 1 or maybe 2 shards, in which case the data would be partitioned by `event_uuid` to ensure equal distribution of data across shards.
 
-> [!IMPORTANT] >**Differences between Toy Example and Local Mock Up:**
+> [!IMPORTANT]
+> **Differences between Toy Example and Local Mock Up:**
 > The **toy example** mocks up the Kinesis stream by simply
 > taking the official AWS Kinesis JSON template and replacing
 > the "data" portion of the payload with the generated event
@@ -93,7 +94,8 @@ already exists in the ID cache (Redis or DynamoDB). It then splits the
 event_type into `event_subtype` and `event_type` and converts the `created_at`
 timestamp to isoformat.
 
-> [!IMPORTANT] > **Differences between Toy Example and Local Mock Up:**
+> [!IMPORTANT]
+> **Differences between Toy Example and Local Mock Up:**
 > The **toy example** implements the Lambda function as
 > a local Python function, whereas the **local mock up** implements
 > an actual Lambda function in Localstack.
@@ -103,7 +105,8 @@ timestamp to isoformat.
 The Lambda function stores the data as `.ndjson` files in the staging area of an S3 bucket / data lake.
 The staging area is partitioned by **year, month, day, hour, and minute**. I.e. every minute, the inflowing data will be stored in a new "folder".
 
-> [!IMPORTANT] > **Differences between Toy Example and Local Mock Up:**
+> [!IMPORTANT]
+> **Differences between Toy Example and Local Mock Up:**
 > The **toy example** stores the data in the local filesystem under the
 > `output/datalake/staging` folder.
 > The **local mock up** mocks an actual S3 bucket using Localstack.
@@ -118,18 +121,21 @@ area into more permanent Parquet files, which are partitioned by **year, month,
 day, and language**, thereby combining a day's worth of staging files and
 clustering them by language_id.
 
-> [!IMPORTANT] > **Differences between Toy Example and Local Mock Up:**
+> [!IMPORTANT]
+> **Differences between Toy Example and Local Mock Up:**
 > To better see the results, the staging layer of the Toy Example additionally opens up a "minute"
 > clustering layer / subfolder to better illustrate the example without the
 > user having to let the script run for several hours.
 
-> [!IMPORTANT] > **Differences between Toy Example and Local Mock Up:**
+> [!IMPORTANT]
+> **Differences between Toy Example and Local Mock Up:**
 > The **toy example** implements the Spark job as a local Python function, whereas the
 > **local mock up** mocks up an AWS Glue instance in Localstack.
 
 The Spark job writes the Parquet files to the `output/datalake/processed` folder.
 
-> [!WARNING] > Discrepancy between the Architecture diagram and the code
+> [!WARNING]
+> Discrepancy between the Architecture diagram and the code
 > While the Architecture diagram lists a Watermark file as a possibility to
 > deduplicate the transformed data, I decided to only duplicate the transformed
 > batch internally to avoid bloat (see discussion section below.)
@@ -143,7 +149,8 @@ To ensure all processes are running smoothly, a Cloudwatch instance monitors
 the number of function invocations, logs all errors and warnings, and
 supervises limits such as storage usage.
 
-> [!IMPORTANT] > **Differences between Toy Example and Local Mock Up:**
+> [!IMPORTANT]
+> **Differences between Toy Example and Local Mock Up:**
 >
 > - The **Toy Example** implements Cloudwatch as a simple `dataclass` in Python
 >   in the `mock_cloudwatch.py` file. It has fields for the number of function
