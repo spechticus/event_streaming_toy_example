@@ -45,20 +45,20 @@ All events have a basic structure:
   of a particular resumed game, or the score achieved in that particular attempt.
 
 Example Event:
-```
+
+```json
 {
-  "event_uuid":"d7ca46d5-80b5-4b81-bf5b-c96a60c4c573",
-  "created_at":1712844605.9512355,
-  "event_name":"game:resumed",
-  "event_specifics":
-  {
-    "device":"iOS",
-    "user_location":"Vernier, France",
-    "attempts":93,
-    "language_id":"lang_ru",
-    "difficulty":"Hard",
-    "score":46,
-    "session_id":"937baf69-7d3e-406c-b32f-f8a937bd70f1"
+  "event_uuid": "d7ca46d5-80b5-4b81-bf5b-c96a60c4c573",
+  "created_at": 1712844605.9512355,
+  "event_name": "game:resumed",
+  "event_specifics": {
+    "device": "iOS",
+    "user_location": "Vernier, France",
+    "attempts": 93,
+    "language_id": "lang_ru",
+    "difficulty": "Hard",
+    "score": 46,
+    "session_id": "937baf69-7d3e-406c-b32f-f8a937bd70f1"
   }
 }
 ```
@@ -77,15 +77,14 @@ The data is serialised into .json and passed on to the downstream consumers.
 The data is then passed into a Kinesis stream which is consumed by a Lambda function.
 The Kinesis stream has 1 or maybe 2 shards, in which case the data would be partitioned by `event_uuid` to ensure equal distribution of data across shards.
 
->[!IMPORTANT]
->**Differences between Toy Example and Local Mock Up:**
->The **toy example** mocks up the Kinesis stream by simply
->taking the official AWS Kinesis JSON template and replacing
->the "data" portion of the payload with the generated event
->all right in the `producer.py` file.
+> [!IMPORTANT] >**Differences between Toy Example and Local Mock Up:**
+> The **toy example** mocks up the Kinesis stream by simply
+> taking the official AWS Kinesis JSON template and replacing
+> the "data" portion of the payload with the generated event
+> all right in the `producer.py` file.
 >
->The **local mock up** mocks up an actual Kinesis stream
->through Localstack.
+> The **local mock up** mocks up an actual Kinesis stream
+> through Localstack.
 
 In the Lambda function, some basic business logic is applied to the data and it
 is deduplicated using a DynamoDB, which is mocked up here as a Redis database.
@@ -94,8 +93,7 @@ already exists in the ID cache (Redis or DynamoDB). It then splits the
 event_type into `event_subtype` and `event_type` and converts the `created_at`
 timestamp to isoformat.
 
-> [!IMPORTANT]
-> **Differences between Toy Example and Local Mock Up:**
+> [!IMPORTANT] > **Differences between Toy Example and Local Mock Up:**
 > The **toy example** implements the Lambda function as
 > a local Python function, whereas the **local mock up** implements
 > an actual Lambda function in Localstack.
@@ -105,8 +103,7 @@ timestamp to isoformat.
 The Lambda function stores the data as `.ndjson` files in the staging area of an S3 bucket / data lake.
 The staging area is partitioned by **year, month, day, hour, and minute**. I.e. every minute, the inflowing data will be stored in a new "folder".
 
-> [!IMPORTANT]
-> **Differences between Toy Example and Local Mock Up:**
+> [!IMPORTANT] > **Differences between Toy Example and Local Mock Up:**
 > The **toy example** stores the data in the local filesystem under the
 > `output/datalake/staging` folder.
 > The **local mock up** mocks an actual S3 bucket using Localstack.
@@ -123,8 +120,7 @@ clustering them by language_id
 //TODO: Check discrepancy in clustering strategy between
 //Architecture diagram (only by day), and actual Glue script (by hour).
 
-> [!IMPORTANT]
-> **Differences between Toy Example and Local Mock Up:**
+> [!IMPORTANT] > **Differences between Toy Example and Local Mock Up:**
 > The **toy example** implements the Spark job as a local Python function, whereas the
 > **local mock up** mocks up an AWS Glue instance in Localstack.
 
@@ -141,8 +137,8 @@ To ensure all processes are running smoothly, a Cloudwatch instance monitors
 the number of function invocations, logs all errors and warnings, and
 supervises limits such as storage usage.
 
-> [!IMPORTANT]
-> **Differences between Toy Example and Local Mock Up:**
+> [!IMPORTANT] > **Differences between Toy Example and Local Mock Up:**
+>
 > - The **Toy Example** implements Cloudwatch as a simple `dataclass` in Python
 >   in the `mock_cloudwatch.py` file. It has fields for the number of function
 >   invocations, the number of ingested events, prevented duplicates, and storage
@@ -157,7 +153,7 @@ with Localstack (also known as [Terraform
 Local](https://github.com/localstack/terraform-local)). It is
 a simple convenience wrapper around Terraform that targets the localhost.
 
-In real contexts, the code would be deployed using a CI/CD pipeline on e.g. Github Actions or AWS CodePipeline. For the sake of scope, I have not included this here.
+In real contexts, the code would be deployed using a CI/CD pipeline on e.g. GitHub Actions or AWS CodePipeline. For the sake of scope, I have not included this here.
 
 ### Out of scope possible further usages
 
@@ -177,7 +173,7 @@ With the data in the production area of the data lake, some possible future down
 
 ### Overview
 
-This is a toy example meant to simulate the basic principles of event stream processing. While it illustrates how a production pipeline might operate, it is simplified and not optimized for deployment on actual AWS services. Instead, it demonstrates how the pipeline handles data throughput, modeling, and file formats.
+This is a toy example meant to simulate the basic principles of event stream processing. While it illustrates how a production pipeline might operate, it is simplified and not optimised for deployment on actual AWS services. Instead, it demonstrates how the pipeline handles data throughput, modeling, and file formats.
 
 ### Modules
 
@@ -239,9 +235,9 @@ make run-toy-example
 
 - **NDJSON (Staging)**: Newline-delimited JSON (NDJSON) allows for fast, schema-flexible writing of event data to the staging area, avoiding the overhead of appending to JSON or enforcing a rigid schema like CSV.
 
-- **Parquet (Storage)**: Parquet is a columnar format optimized for analytics, supporting schema evolution, efficient queries, and nested data—perfect for the project’s structured JSON-like data.
+- **Parquet (Storage)**: Parquet is a columnar format optimised for analytics, supporting schema evolution, efficient queries, and nested data—perfect for the project’s structured JSON-like data.
 
-- **CI/CD**: **GitHub Actions** and **AWS CodePipeline** are both strong choices for automating code deployment and testing, with the choice typically based on organizational preference.
+- **CI/CD**: **GitHub Actions** and **AWS CodePipeline** are both strong choices for automating code deployment and testing, with the choice typically based on organisational preference.
 
 - **CloudWatch**: Used to track pipeline performance (e.g., Kinesis throughput, Lambda invocations, batch processing times). It also sets up alerts to monitor for spikes in latency or resource use, ensuring timely intervention.
 
@@ -282,7 +278,7 @@ Data partitioning was influenced by two factors:
 For this pipeline, two file formats are used:
 
 - **NDJSON**: In the staging area, NDJSON is ideal for fast, schema-flexible writes. It’s lightweight and doesn’t require complex handling, which makes it a great fit for the real-time nature of Lambda outputs.
-- **Parquet**: For permanent storage, Parquet is used due to its columnar storage format, which supports schema evolution and is optimized for large-scale querying, making it perfect for analytics.
+- **Parquet**: For permanent storage, Parquet is used due to its columnar storage format, which supports schema evolution and is optimised for large-scale querying, making it perfect for analytics.
 
 ### Testing and Reliability
 
