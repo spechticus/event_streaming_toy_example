@@ -1,4 +1,4 @@
-# Event Streaming Toy Example
+# Event Streaming Pipeline Toy Example
 
 This is a bigger project about exploring a common Data Engineering task:
 how to process an **event stream** from an app. My example here is a language
@@ -11,7 +11,8 @@ level of detail of how close it is modelled to actual AWS cloud
 architectures differs.
 
 This is the toy project repository. You can find the local mock up
-repository for this project [here](LINK).
+repository for this project ~~here~~ as soon as it's finished.
+
 TODO: Insert correct link to other repo here.
 
 ## Summary and Purpose
