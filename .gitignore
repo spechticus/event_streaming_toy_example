@@ -1,14 +1,17 @@
-dump.rdb
-data_creation/__pycache__
+# Directories
 output/datalake/processed/*
 !output/datalake/processed/.gitkeep
 output/datalake/staging/*
 !output/datalake/staging/.gitkeep
 output/cloudwatch_reports/*
 !output/cloudwatch_reports/.gitkeep
-!output/datalake/staging/.gitkeep
+
+# Pycache
 toy_example/__pycache__
-output/cloudwatch_reports/*
 test/__pycache__
+data_creation/__pycache__
 toy_example/.DS_Store
+
+# individual files
 output.json
+dump.rdb
